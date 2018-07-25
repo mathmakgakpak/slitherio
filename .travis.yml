@@ -1,2 +1,5 @@
+sudo: enabled
 language: cpp
+before_install:
+  - sudo apt-get install -y libsdl2-dev
 install: clang++ slitherio.cpp -Wall -lSDL2 -lGL -o slitherio
