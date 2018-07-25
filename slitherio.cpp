@@ -192,6 +192,9 @@ void updateCursor(int X, int Y) {
 }
 
 void display() {
+    if (pause) {
+        return;
+    }
     glClear(GL_COLOR_BUFFER_BIT);
     glLoadIdentity();
     glOrtho(me->segments[0].x-100.0, me->segments[0].x+100.0, me->segments[0].y-100.0, me->segments[0].y+100.0, -1.0, 1.0);
