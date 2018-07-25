@@ -1,0 +1,2 @@
+language: cpp
+install: clang++ slitherio.cpp -Wall -lSDL2 -lGL -o slitherio
