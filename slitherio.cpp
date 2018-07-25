@@ -183,8 +183,8 @@ namespace Slitherio {
     };
 }
 
-bool pause = false;
-Slitherio::Snake *me = NULL;
+extern bool pause;
+Slitherio::Snake *me;
 std::vector<Slitherio::Circle> food;
 
 void updateCursor(int X, int Y) {
@@ -308,6 +308,8 @@ int eventThread(void *ptr) {
 #endif
 
 int main(int argc, char **argv) {
+    pause = false;
+    me = NULL;
     setup();
     #ifdef USE_SDL
     #ifndef USE_SDL2
