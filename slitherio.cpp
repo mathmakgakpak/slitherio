@@ -20,6 +20,7 @@ SDL_Window *window;
 SDL_GLContext glcontext;
 #endif
 
+bool pause;
 void setup();
 
 namespace Slitherio {
@@ -183,7 +184,6 @@ namespace Slitherio {
     };
 }
 
-extern bool pause;
 Slitherio::Snake *me;
 std::vector<Slitherio::Circle> food;
 
@@ -363,6 +363,16 @@ int main(int argc, char **argv) {
     SDL_Thread *thread = SDL_CreateThread(eventThread, "eventThread", NULL);
     
     while (1) {
+        #ifdef USE_SDL2
+        if (SDL_IsScreenSaverEnabled() != pause) {
+            if (pause) {
+                SDL_EnableScreenSaver();
+            } else {
+                SDL_DisableScreenSaver();
+            }
+        }
+        #endif
+        
         SDL_Delay(30);
         display();
     }
