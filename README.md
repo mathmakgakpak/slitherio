@@ -8,3 +8,5 @@ Build with:
 ```
 c++ -DUSE_SDL2 -o slitherio slitherio.cpp -lSDL2 -lGL
 ```
+
+Use the P key to pause, and the Q key to quit.
