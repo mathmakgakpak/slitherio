@@ -112,6 +112,25 @@ namespace Slitherio {
             
             /* if still alive, return true; otherwise, return false. */
             bool update(std::vector<Circle>& food) {
+                // wrap around
+                if (segments[0].x > 1000.0) {
+                    for (int i = 0; i < segments.size(); i++) {
+                        segments[i].x -= 1000.0;
+                    }
+                } else if (segments[0].x < -1000.0) {
+                    for (int i = 0; i < segments.size(); i++) {
+                        segments[i].x += 1000.0;
+                    }
+                } else if (segments[0].y > 1000.0) {
+                    for (int i = 0; i < segments.size(); i++) {
+                        segments[i].y -= 1000.0;
+                    }
+                } else if (segments[0].y < -1000.0) {
+                    for (int i = 0; i < segments.size(); i++) {
+                        segments[i].y += 1000.0;
+                    }
+                }
+                
                 segments[0].x += xdir;
                 segments[0].y += ydir;
                 for (int i = 0; i < (segments.size() - 1); i++) {

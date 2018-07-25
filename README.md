@@ -6,5 +6,5 @@ Just a quick project I put together. It only needs SDL2 and OpenGL headers to be
 
 Build with:
 ```
-c++ -o slitherio slitherio.cpp -lSDL2 -lGL
+c++ -DUSE_SDL2 -o slitherio slitherio.cpp -lSDL2 -lGL
 ```
