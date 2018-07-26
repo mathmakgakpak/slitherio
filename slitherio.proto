@@ -1,0 +1,96 @@
+syntax = "proto3";
+
+package slitherio;
+
+/* A circle. Can be the segments of a snake (food = false),
+ * or a food pellet (food = true).
+ * it has an x coordinate, y coordinate, and radius (r).
+ */
+message Circle {
+    /* true if this circle is a food pellet, and can be eaten. */
+    bool food = 1;
+    /* the center x coordinate of this circle on the plane. */
+    double x = 2;
+    /* the center y coordinate of this circle on the plane. */
+    double y = 3;
+    /* the radius of the circle */
+    double r = 4;
+}
+
+/* Holds the direction vector of a snake.
+ * The total 'distance' of this vector is always
+ * 1; i.e., sqrt((x * x) + (y * y)) is always 1.
+ */
+message Direction {
+    /* the x component of the direction vector */
+    float x = 1;
+    /* the y component of the direction vector */
+    float y = 2;
+}
+
+/* A client, a snake. Made up of many circular
+ * segments. A snake grows when it eats food.
+ * Currently, snakes do not lose food except
+ * when dying completely.
+ */
+message Snake {
+    /* the client id, unique for each snake. */
+    int32 id = 1;
+    /* the size, always equal to the number of segments. */
+    int32 size = 2;
+    /* The segments (including the head) of this snake. It can only
+     * eat with its head, no other part. This is partly to make
+     * collision detection reasonable, but also makes sense.
+     * The head is the first (segments[0] in C/C++) segment.
+     */
+    repeated Circle segments = 3;
+    /* The way the snake "wants" to go. Given by the client.
+     * It is important to sanitize this part; if the snake
+     * chooses a vector whose distance is not 1, the snake
+     * will go faster than the other snakes.
+     */
+    Direction dir = 4;
+}
+
+/* A packet. When a client joins, a NEARBY
+ * packet is sent to notify the snake of it's
+ * id, location and such.
+ */
+message GameMessage {
+    /* The type of message. */
+    enum MessageType {
+        /* Go towards a direction. From the client.
+         * A "NEARBY" packet should be sent back
+         * from the server.
+         * Must include 'dir' as the new vector.
+         */
+        DIR = 0;
+        /* What snakes/food are nearby?
+         * By nearby, we mean within 200 units of the head.
+         * Must include the current snake as the first
+         * element in 'snakes', then any nearby snakes.
+         * In addition to 'snakes' being required,
+         * 'food' must present if there is any nearby food.
+         */
+        NEARBY = 1;
+        /* Sent by the server around the time of the physics
+         * tick that killed the snake. The server is not
+         * required to be responsive to any future packets
+         * sent by the client; the client must reconnect.
+         */
+        DEATH = 2;
+    }
+    
+    /* The type of message, see enum. */
+    MessageType type = 1;
+    
+    /* The new direction of the snake, sent by the client. */
+    Direction dir = 2;
+    
+    /* The snakes around us. The first snake must be our own snake,
+     * then other nearby snakes in any order.
+     */
+    repeated Snake snakes = 3;
+    /* Any food nearby. */
+    repeated Circle food = 4;
+}

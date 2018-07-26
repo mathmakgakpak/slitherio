@@ -1,5 +1,5 @@
 sudo: enabled
 language: cpp
 install:
-  - sudo apt-get install -y libsdl2-dev libegl1-mesa-dev
-script: clang++ -DUSE_SDL2 slitherio.cpp -Wall -lSDL2 -lGL -o slitherio
+  - sudo apt-get install -y libsdl2-dev libegl1-mesa-dev libboost-all-dev
+script: CPP=clang++ make all
